@@ -21,7 +21,9 @@ public class Nota {
     @ColumnInfo(name = "descripcion")
     private String descripcion;
 
-    public Nota() {
+    public Nota(String titulo, String descripcion) {
+        this.titulo = titulo;
+        this.descripcion = descripcion;
     }
 
     public int getId() {
