@@ -23,6 +23,8 @@ public abstract class NotaDatabase extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     NotaDatabase.class, "bd_notas")
+                    .addCallback(room)
+                    .fallbackToDestructiveMigration()
                     // .allowMainThreadQueries()
                     .build();
         }
@@ -30,20 +32,33 @@ public abstract class NotaDatabase extends RoomDatabase {
         return instance;
     }
 
-    private static RoomDatabase.Callback room = new RoomDatabase.Callback() {
+    private static RoomDatabase.Callback room = new RoomDatabase.Callback(){
 
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
 
             new PopulateBDAsyntask(instance).execute();
+
         }
     };
 
-    private static class PopulateBDAsyntask extends AsyncTask<Void, Void, Void> {
+    private static class  PopulateBDAsyntask extends AsyncTask<Void, Void, Void> {
+
+        NotaDatabase instance;
+
+        public PopulateBDAsyntask(NotaDatabase instance) {
+
+            this.instance = instance;
+        }
 
         @Override
         protected Void doInBackground(Void... voids) {
+
+            instance.notaDao().insert(new Nota("Nota01", "Practicar Android"));
+            instance.notaDao().insert(new Nota("Nota02", "Practicar IOS"));
+            instance.notaDao().insert(new Nota("Nota03", "Practicar Backend"));
+
             return null;
         }
     }
