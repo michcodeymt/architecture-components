@@ -1,10 +1,13 @@
 package com.ymt.components.database;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 /**
  * @author michcode
@@ -20,10 +23,28 @@ public abstract class NotaDatabase extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     NotaDatabase.class, "bd_notas")
-                    .allowMainThreadQueries()
+                    // .allowMainThreadQueries()
                     .build();
         }
 
         return instance;
+    }
+
+    private static RoomDatabase.Callback room = new RoomDatabase.Callback() {
+
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+
+            new PopulateBDAsyntask(instance).execute();
+        }
+    };
+
+    private static class PopulateBDAsyntask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
     }
 }
