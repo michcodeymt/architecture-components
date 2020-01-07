@@ -41,6 +41,26 @@ public class NotaRepository {
         new DeleteAsyntask(notaDao).execute(nota);
     }
 
+    public void deleteAll() {
+        new DeleteAllAsyntask(notaDao).execute();
+    }
+
+    private class DeleteAllAsyntask extends AsyncTask<Void, Void, Void> {
+
+        NotaDao notaDao;
+
+        public DeleteAllAsyntask(NotaDao notaDao) {
+            this.notaDao = notaDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            notaDao.deleteAll();
+            return null;
+        }
+    }
+
+
     private class DeleteAsyntask extends AsyncTask<Nota, Void, Void> {
 
         NotaDao notaDao;

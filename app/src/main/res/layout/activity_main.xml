@@ -19,4 +19,14 @@
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
         android:layout_gravity="bottom|right"/>
+
+    <Button
+        android:id="@+id/btn_eliminar_todos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="Eliminar todos"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_gravity="bottom|left"/>
 </FrameLayout>

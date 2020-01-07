@@ -26,4 +26,7 @@ public interface NotaDao {
 
     @Delete
     void delete(Nota nota);
+
+    @Query("delete from tabla_notas")
+    void deleteAll();
 }

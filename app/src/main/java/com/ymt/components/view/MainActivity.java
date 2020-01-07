@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button btn_agregar_notas = findViewById(R.id.btn_agregar_notas);
+        Button btn_eliminar_todo = findViewById(R.id.btn_eliminar_todos);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_notas);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -47,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<Nota> notas) {
 
                 notaAdapter.setNotas(notas);
+            }
+        });
+
+        btn_eliminar_todo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createLoginDialogo().show();
             }
         });
 
@@ -118,5 +128,49 @@ public class MainActivity extends AppCompatActivity {
             notaViewModel.update(nota);
             Toast.makeText(this, "Actualizado", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public AlertDialog createLoginDialogo() {
+
+        final AlertDialog alertDialog;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.dialog_eliminar_todos, null);
+
+        builder.setView(v);
+
+        Button btn_aperturar_no =  v.findViewById(R.id.btn_aperturar_no);
+        Button btn_aperturar_si =  v.findViewById(R.id.btn_aperturar_si);
+
+        alertDialog = builder.create();
+
+
+        btn_aperturar_si.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        notaViewModel.deleteAll();
+                        alertDialog.dismiss();
+
+                    }
+                }
+        );
+
+        btn_aperturar_no.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        alertDialog.dismiss();
+
+                    }
+                }
+
+        );
+
+        return alertDialog;
     }
 }
